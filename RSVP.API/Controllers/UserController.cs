@@ -1,8 +1,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RSVP.Application.Dtos;
 using RSVP.Application.Features.User.Command.CreateUser;
 using RSVP.Application.Features.User.Command.UpdateUser;
+using RSVP.Application.Features.User.Query;
 
 namespace RSVP.API.Controllers
 {
@@ -16,6 +18,28 @@ namespace RSVP.API.Controllers
         {
             _mediator = mediator;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
+          GetUsersQuery query = new GetUsersQuery();
+          return Ok(await _mediator.Send(query));
+           
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            GetUserByIdQuery query = new GetUserByIdQuery
+            {
+                UserId = id
+            };
+            var userDto = await _mediator.Send(query);
+            return Ok(userDto);
+        }
+
+
+
 
         [HttpPost]
 
@@ -34,6 +58,7 @@ namespace RSVP.API.Controllers
                 await _mediator.Send(command);
                 return NoContent();
         }
+
 
     }
 }
