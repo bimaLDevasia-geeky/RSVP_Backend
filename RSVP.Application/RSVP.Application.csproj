@@ -11,12 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Event\Commands\DeleteEvent\" />
     <Folder Include="Features\Event\Queries\" />
     <Folder Include="Features\User\Query\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.0" />
     <PackageReference Include="MediatR" Version="13.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.22" />
   </ItemGroup>
