@@ -24,8 +24,9 @@ public class Event
 
     public ICollection<Attendie> Attendies { get; private set; } = new List<Attendie>();
     public ICollection<Media> Media { get; private set; } = new List<Media>();
+    public ICollection<Request> Requests { get; private set; } = new List<Request>();
 
-    public User User { get; private set; }=null!;
+    public User Creator { get; private set; }=null!;
 
 
 

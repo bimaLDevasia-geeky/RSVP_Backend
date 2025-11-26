@@ -13,11 +13,18 @@ public class AttendiesConfiguration:IEntityTypeConfiguration<Attendie>
 
         builder.HasKey(a => a.Id);
 
-
-        builder.HasOne(a=> a.Event)
-            .WithMany(e=>e.Attendies)
+        
+        builder.HasOne(a => a.Event)
+            .WithMany(e => e.Attendies)
             .HasForeignKey(a => a.EventId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        
+        builder.HasOne(a => a.User)
+            .WithMany()
+            .HasForeignKey(a => a.UserId)
+            .OnDelete(DeleteBehavior.SetNull)
+            .IsRequired(false);
 
         builder.Property(a => a.EventId)
             .IsRequired()
