@@ -51,3 +51,5 @@ docker-compose.override.yml
 !/tests/
 !.editorconfig
 !*.sln
+
+Migrations
