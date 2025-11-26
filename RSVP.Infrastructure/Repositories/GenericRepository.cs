@@ -14,24 +14,24 @@ public class GenericRepository<T> : IRepository<T> where T : class
         _context = context;
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public async Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.Set<T>().ToListAsync();
+        return await _context.Set<T>().ToListAsync(cancellationToken);
     }
 
-    public async Task<T?> GetByIdAsync(int id)
+    public async Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await _context.Set<T>().FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
+        return await _context.Set<T>().FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id, cancellationToken);
     }
 
-    public async Task AddAsync(T entity)
+    public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
     {
-        await  _context.Set<T>().AddAsync(entity);
+        await  _context.Set<T>().AddAsync(entity, cancellationToken);
     }
 
-    public async Task AddRangeAsync(IEnumerable<T> entities)
+    public async Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default)
     {
-        await _context.Set<T>().AddRangeAsync(entities);
+        await _context.Set<T>().AddRangeAsync(entities, cancellationToken);
     }
 
     public void Delete(T entity)
@@ -39,8 +39,8 @@ public class GenericRepository<T> : IRepository<T> where T : class
         _context.Set<T>().Remove(entity);
     }
 
-    public async Task SaveChangesAsync()
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }
