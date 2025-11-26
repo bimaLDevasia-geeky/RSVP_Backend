@@ -11,4 +11,5 @@ public record class CreateEventCommand:IRequest<int>
     public string Venue { get; init; } = null!;
 
     public TimeOnly Time { get; init; }
+    public Boolean IsPublic { get; init; }
 }

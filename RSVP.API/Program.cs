@@ -5,6 +5,8 @@ using RSVP.Infrastructure.Repositories;
 using MediatR;
 using System.Reflection;
 using RSVP.Application;
+using RSVP.Application.Service;
+using Microsoft.AspNetCore.Http;
 {
     
 }
@@ -21,7 +23,12 @@ builder.Services.AddMediatR(cfg =>
 
     
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 
+
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
