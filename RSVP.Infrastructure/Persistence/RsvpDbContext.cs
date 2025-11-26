@@ -1,10 +1,11 @@
 using System;
 using Microsoft.EntityFrameworkCore;
+using RSVP.Application.Interfaces;
 using RSVP.Domain.Entities;
 
 namespace RSVP.Infrastructure.Persistence;
 
-public class RsvpDbContext:DbContext
+public class RsvpDbContext:DbContext, IRsvpDbContext
 {
     public RsvpDbContext(DbContextOptions<RsvpDbContext> options):base(options)
     {

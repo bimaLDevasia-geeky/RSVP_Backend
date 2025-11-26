@@ -9,8 +9,8 @@ public class User
     public string Name { get; private set; }=null!;
     public string Email { get; private set; }=null!;
     public string HashedPassword { get; private set; } =null!;
-    public UserStatus Status { get; private set; } = UserStatus.Active; 
-    public UserRole Role { get; private set; } = UserRole.User;
+    public UserStatus Status { get; private set; }
+    public UserRole Role { get; private set; } 
     public ICollection<Event> CreatedEvents { get; private set; } = new List<Event>();
     public ICollection<Request> Requests { get; private set; } = new List<Request>();
     public ICollection<Notification> Notifications { get; private set; } = new List<Notification>();
@@ -20,6 +20,8 @@ public class User
         Name = name;
         Email = email;
         HashedPassword = hashedPassword;
+        Status = UserStatus.Active;
+        Role = UserRole.User;
     }
 
     public void UpdateUser(string? name, string? email)

@@ -16,15 +16,15 @@ public class CreateUserCommandHandler:IRequestHandler<CreateUserCommand,int>
 
     public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-
+        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
         var user = new Domain.Entities.User(
             name: request.Name.Trim(),
             email: request.Email.Trim().ToLowerInvariant(),
-            hashedPassword: request.Password
+            hashedPassword: hashedPassword
         );
 
-        await _userRepository.AddAsync(user);
-        await _userRepository.SaveChangesAsync();
+        await _userRepository.AddAsync(user, cancellationToken);
+        await _userRepository.SaveChangesAsync(cancellationToken);
 
         return user.Id;
     }
