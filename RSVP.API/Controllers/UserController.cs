@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RSVP.Application.Features.User.Command.CreateUser;
+using RSVP.Application.Features.User.Command.UpdateUser;
 
 namespace RSVP.API.Controllers
 {
@@ -16,12 +17,22 @@ namespace RSVP.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost()]
+        [HttpPost]
 
         public async Task<IActionResult> AddUser(CreateUserCommand command)
         {
             var userId = await _mediator.Send(command);
             return Ok(userId);
+        }
+
+
+        [HttpPatch("{id}")]
+    
+        public async Task<IActionResult> UpdateUser(UpdateUserCommand command, int id)
+        {
+                command.UserId = id;
+                await _mediator.Send(command);
+                return NoContent();
         }
 
     }
