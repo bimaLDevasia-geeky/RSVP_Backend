@@ -6,9 +6,9 @@ namespace RSVP.Domain.Entities;
 public class User
 {
     public int Id { get; private set; }
-    public string Name { get; private set; }
-    public string Email { get; private set; }
-    public string HashedPassword { get; private set; }
+    public string Name { get; private set; }=null!;
+    public string Email { get; private set; }=null!;
+    public string HashedPassword { get; private set; } =null!;
     public UserStatus Status { get; private set; } = UserStatus.Active; 
     public UserRole Role { get; private set; } = UserRole.User;
 

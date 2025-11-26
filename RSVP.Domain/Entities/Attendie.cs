@@ -3,7 +3,7 @@ using RSVP.Domain.Enums;
 
 namespace RSVP.Domain.Entities;
 
-public class Attendies
+public class Attendie
 {
     public int Id { get; private set; }
     public int EventId { get; private set; }
@@ -11,9 +11,13 @@ public class Attendies
     public string Email { get; private set; }=null!;
 
     public AttendiesRole Role { get; private set; } = AttendiesRole.Guest;
-    public AttendiesStatus Status { get; private set; } = AttendiesStatus.NoResponse;  
+    public AttendiesStatus Status { get; private set; } = AttendiesStatus.NoResponse; 
 
-    public Attendies(int eventId, int userId, string email)
+    public Event Event { get; private set; } = null!;
+
+    
+
+    public Attendie(int eventId, int userId, string email)
     {
         EventId = eventId;
         UserId = userId;
