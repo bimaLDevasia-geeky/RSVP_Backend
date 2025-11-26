@@ -27,6 +27,7 @@ appsettings.Local.json
 *.env
 .env.local
 **/appsettings.*.json
+appsettings.json
 
 ## OS Generated Files
 .DS_Store
