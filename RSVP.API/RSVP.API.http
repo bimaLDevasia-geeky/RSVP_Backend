@@ -1,0 +1,6 @@
+@RSVP.API_HostAddress = http://localhost:5277
+
+GET {{RSVP.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

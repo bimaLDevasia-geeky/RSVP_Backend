@@ -1,0 +1,51 @@
+## Core .NET Build Artifacts
+[Bb]in/
+[Oo]bj/
+/out/
+
+## Visual Studio & IDEs
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Tests and Coverage
+TestResults/
+*.trdx
+coverage.json
+coverage.xml
+*.cobertura.xml
+artifacts/
+
+## Environment Variables & Secrets (CRITICAL for CQRS/Microservices)
+# Never commit local development settings or keys
+appsettings.Development.json
+appsettings.Local.json
+*.env
+.env.local
+
+## OS Generated Files
+.DS_Store
+Thumbs.db
+
+## NuGet
+*.nupkg
+# The packages folder can generally be ignored for PackageReference projects
+*.snupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+
+## Docker (If you use containers for EventStore, RabbitMQ, or SQL)
+docker-compose.override.yml
+.dockerignore
+
+## Exceptions (Files you usually want to keep)
+!/src/
+!/tests/
+!.editorconfig
+!*.sln
