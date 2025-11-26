@@ -11,6 +11,9 @@ public class Request
     public DateTime RequestedAt { get; private set; }
     public RequestStatus Status { get; private  set; } = RequestStatus.Pending;
     
+    public Event Event { get; private set; }= null!;
+    public User User { get; private set; }= null!;
+
     public Request(int eventId, int  userId)
     {
         EventId = eventId;

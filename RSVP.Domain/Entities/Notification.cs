@@ -9,7 +9,7 @@ public class Notification
     public string Description { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public string Route { get; private set; }   
-
+    public User User { get; private set; }= null!;
 
     public Notification(int userId, string description, string route)
     {
