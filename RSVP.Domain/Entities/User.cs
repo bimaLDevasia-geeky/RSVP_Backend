@@ -1,0 +1,43 @@
+using System;
+using RSVP.Domain.Enums;
+
+namespace RSVP.Domain.Entities;
+
+public class User
+{
+    public int Id { get; private set; }
+    public string Name { get; private set; }
+    public string Email { get; private set; }
+    public string HashedPassword { get; private set; }
+    public UserStatus Status { get; private set; } = UserStatus.Active; 
+    public UserRole Role { get; private set; } = UserRole.User;
+
+    public User(string name, string email, string hashedPassword)
+    {
+        Name = name;
+        Email = email;
+        HashedPassword = hashedPassword;
+    }
+
+    public void UpdateUser(string? name, string? email)
+    {
+        if (name != null)
+        {
+            Name = name;
+        }
+        if (email != null)
+        {
+            Email = email;
+        }
+    }
+
+    public void ChangeStatus(UserStatus newStatus)
+    {
+        Status = newStatus;
+    }
+
+    public void ChangeRole(UserRole newRole)
+    {
+        Role = newRole;
+    }
+}
