@@ -11,7 +11,10 @@ public class User
     public string HashedPassword { get; private set; } =null!;
     public UserStatus Status { get; private set; } = UserStatus.Active; 
     public UserRole Role { get; private set; } = UserRole.User;
-
+    public ICollection<Event> CreatedEvents { get; private set; } = new List<Event>();
+    public ICollection<Request> Requests { get; private set; } = new List<Request>();
+    public ICollection<Notification> Notifications { get; private set; } = new List<Notification>();
+    
     public User(string name, string email, string hashedPassword)
     {
         Name = name;
