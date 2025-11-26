@@ -1,6 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+using RSVP.Infrastructure.Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<RsvpDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("RsvpConnectionString")));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
