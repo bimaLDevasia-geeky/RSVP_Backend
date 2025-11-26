@@ -21,7 +21,7 @@ builder.Services.AddDbContext<RsvpDbContext>(options =>
 builder.Services.AddMediatR(cfg =>
  cfg.RegisterServicesFromAssembly(Assembly.Load("RSVP.Application")));
 
-    
+builder.Services.AddScoped<IRsvpDbContext>(provider => provider.GetRequiredService<RsvpDbContext>());
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 
