@@ -8,6 +8,8 @@ public class Media
     public int EventId {get; private set; }
     public string Url {get; private set; }=null!;
 
+    public Event Event { get; private set; } = null!;
+
     public Media(int eventId, string url)
     {
         EventId = eventId;
