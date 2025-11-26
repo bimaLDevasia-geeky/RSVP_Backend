@@ -2,12 +2,23 @@ using Microsoft.EntityFrameworkCore;
 using RSVP.Application.Interfaces;
 using RSVP.Infrastructure.Persistence;
 using RSVP.Infrastructure.Repositories;
+using MediatR;
+using System.Reflection;
+using RSVP.Application;
+{
+    
+}
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<RsvpDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("RsvpConnectionString")));
+
+
+builder.Services.AddMediatR(cfg =>
+ cfg.RegisterServicesFromAssembly(Assembly.Load("RSVP.Application")));
+
     
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
