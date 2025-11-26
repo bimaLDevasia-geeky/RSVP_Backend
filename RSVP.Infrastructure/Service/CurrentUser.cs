@@ -24,4 +24,17 @@ public class CurrentUser:ICurrentUser
             throw new Exception("User ID not found in the current context.");
         }
     }
+
+    public string Role
+    {
+        get
+        {
+            var role = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Role)?.Value;
+            if (role != null)
+            {
+                return role;
+            }
+            throw new Exception("User Role not found in the current context.");
+        }
+    }
 }
