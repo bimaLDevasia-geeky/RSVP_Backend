@@ -10,4 +10,8 @@
     <ProjectReference Include="..\RSVP.Domain\RSVP.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\" />
+  </ItemGroup>
+
 </Project>
