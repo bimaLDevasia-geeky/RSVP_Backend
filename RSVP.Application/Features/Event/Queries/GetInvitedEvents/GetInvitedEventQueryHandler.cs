@@ -20,7 +20,6 @@ public class GetInvitedEventQueryHandler:IRequestHandler<GetInvitedEventQuery,Li
         int userId = _currentUserService.UserId;
         List<appDomain.Event> events = await _context.Events
                                             .AsNoTracking()
-                                            .Include(e => e.Attendies.Where(a => a.UserId == userId))
                                             .Where(e =>e.CreatedBy != userId && e.Attendies.Any(a => a.UserId == userId && (a.Role != Domain.Enums.AttendiesRole.Organizer)))
                                             .ToListAsync(cancellationToken);
         return events;

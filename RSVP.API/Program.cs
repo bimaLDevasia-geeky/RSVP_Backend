@@ -74,6 +74,7 @@ builder.Services.AddScoped<IEventAccessService, EventAccessService>();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserReposistory, UserRepository>();
+builder.Services.AddScoped<IRefreshReposistary, RefreshReposistary>();
 
 
 builder.Services.AddAuthorization();
