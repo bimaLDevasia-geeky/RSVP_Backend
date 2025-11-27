@@ -29,7 +29,8 @@ public class CreateEventCommandHandler:IRequestHandler<CreateEventCommand,int>
             );
 
 
-        await _eventRepository.AddAsync(newEvent,cancellationToken);   
+        await _eventRepository.AddAsync(newEvent,cancellationToken);  
+        await _eventRepository.SaveChangesAsync(cancellationToken);
         return newEvent.Id;
 
     }

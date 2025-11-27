@@ -2,7 +2,7 @@ using System;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RSVP.Application.Interfaces;
-using RSVP.Domain.Entities;
+using appDomain= RSVP.Domain.Entities;
 using RSVP.Domain.Enums;
 
 namespace RSVP.Application.Features.Request.Commands.UpdateRequest;
@@ -11,12 +11,12 @@ public class UpdateRequestCommandHandler:IRequestHandler<UpdateRequestCommand,bo
 {
     private readonly IRepository<Domain.Entities.Request> _requestRepository;
 
-    private readonly IRepository<Attendie> _attendieRepository;
+    private readonly IRepository<appDomain.Attendie> _attendieRepository;
     private readonly IRepository<Domain.Entities.User> _userRepository;
     private readonly IRsvpDbContext _context;
 
 
-    public UpdateRequestCommandHandler(IRepository<Domain.Entities.Request> requestRepository, IRepository<Attendie> attendieRepository,IRepository<Domain.Entities.User> userRepository, IRsvpDbContext context)
+    public UpdateRequestCommandHandler(IRepository<Domain.Entities.Request> requestRepository, IRepository<appDomain.Attendie> attendieRepository,IRepository<Domain.Entities.User> userRepository, IRsvpDbContext context)
     {
         _requestRepository = requestRepository;
         _attendieRepository = attendieRepository;
@@ -47,7 +47,7 @@ public class UpdateRequestCommandHandler:IRequestHandler<UpdateRequestCommand,bo
             {
                 throw new InvalidOperationException("Attendie already exists for this event and user.");
             }
-            var newAttendie = new Attendie
+            var newAttendie = new appDomain.Attendie
             (
                 requestToUpdate.EventId,
                 requestToUpdate.UserId,
