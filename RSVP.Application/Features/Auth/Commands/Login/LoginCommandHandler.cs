@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using RSVP.Application.Dtos;
 using RSVP.Application.Interfaces;
 using RSVP.Domain.Entities;
+using RSVP.Domain.Enums;
 using appDomain= RSVP.Domain.Entities;
 
 namespace RSVP.Application.Features.Auth.Commands.Login;
@@ -31,8 +32,15 @@ public class LoginCommandHandler:IRequestHandler<LoginCommand,LoginResultDto>
         {
             throw new UnauthorizedAccessException("Invalid email or password.");
         }
-        string accessToken = tokenService.GenerateAccessToken(user.Id, request.Email, "User");
 
+        
+        string role;
+        if (user.Role == UserRole.Admin)
+        role ="Admin";
+        else
+         role ="User";
+        
+        string accessToken = tokenService.GenerateAccessToken(user.Id, request.Email, role);
        appDomain.RefreshToken refreshToken = tokenService.GenerateRefreshToken(user.Id);
 
         tokenService.SetRefreshTokenInCookies(refreshToken);
