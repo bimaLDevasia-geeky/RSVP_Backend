@@ -7,7 +7,7 @@ namespace RSVP.Infrastructure.Repositories;
 
 public class GenericRepository<T> : IRepository<T> where T : class
 {
-    private readonly RsvpDbContext _context;
+    protected readonly RsvpDbContext _context;
 
     public GenericRepository(RsvpDbContext context)
     {

@@ -12,5 +12,6 @@ public interface IRsvpDbContext
     public DbSet<User> Users { get;  }
     public DbSet<Notification> Notifications { get;  }
     public DbSet<Request> Requests { get;  }
+    public DbSet<RefreshToken> RefreshTokens { get;  }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

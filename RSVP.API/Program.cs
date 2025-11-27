@@ -10,6 +10,10 @@ using Microsoft.AspNetCore.Http;
 using FluentValidation;
 using RSVP.Application.Common.Behaviours;
 using RSVP.Infrastructure.Service;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Text.Json.Serialization;
 {
     
 }
@@ -17,10 +21,15 @@ using RSVP.Infrastructure.Service;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 builder.Services.AddDbContext<RsvpDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("RsvpConnectionString")));
 
+
+
 builder.Services.AddValidatorsFromAssembly(Assembly.Load("RSVP.Application"));
+
+
 
 builder.Services.AddMediatR(cfg =>{
 
@@ -30,16 +39,52 @@ builder.Services.AddMediatR(cfg =>{
     
  });
 
+ var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var secretKey = jwtSettings["Secret"];
+
+// --- 2. Add Authentication Services ---
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
+    };
+});
+
+
+
+
+
 builder.Services.AddScoped<IRsvpDbContext>(provider => provider.GetRequiredService<RsvpDbContext>());
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 builder.Services.AddScoped<IEventAccessService, EventAccessService>();
-
-
-
-builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
-builder.Services.AddControllers();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IUserReposistory, UserRepository>();
+
+
+builder.Services.AddAuthorization();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddControllers()
+.AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -55,6 +100,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -7,5 +7,7 @@ public interface ICurrentUser
     int UserId { get; }
 
     string Role { get;  }
+
+    string RefreshToken { get; }
     
 }
