@@ -5,7 +5,7 @@ using RSVP.Application.Dtos;
 
 namespace RSVP.Application.Features.User.Query;
 
-public class GetUserByIdQuery:IRequest<UserDto>
+public class GetUserByIdQuery:IRequest<UserDataDto>
 {
     [JsonIgnore]
     public int UserId { get; set; }

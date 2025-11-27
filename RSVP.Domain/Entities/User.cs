@@ -14,6 +14,7 @@ public class User
     public ICollection<Event> CreatedEvents { get; private set; } = new List<Event>();
     public ICollection<Request> Requests { get; private set; } = new List<Request>();
     public ICollection<Notification> Notifications { get; private set; } = new List<Notification>();
+    public ICollection<Attendie> Attendies { get; private set; } = new List<Attendie>();
     
     public User(string name, string email, string hashedPassword)
     {
@@ -22,6 +23,7 @@ public class User
         HashedPassword = hashedPassword;
         Status = UserStatus.Active;
         Role = UserRole.User;
+        
     }
 
     public void UpdateUser(string? name, string? email)

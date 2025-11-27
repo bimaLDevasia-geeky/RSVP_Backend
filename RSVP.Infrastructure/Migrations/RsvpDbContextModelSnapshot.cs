@@ -231,7 +231,7 @@ namespace RSVP.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("RSVP.Domain.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("Attendies")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.SetNull);
 
@@ -303,6 +303,8 @@ namespace RSVP.Infrastructure.Migrations
 
             modelBuilder.Entity("RSVP.Domain.Entities.User", b =>
                 {
+                    b.Navigation("Attendies");
+
                     b.Navigation("CreatedEvents");
 
                     b.Navigation("Notifications");
