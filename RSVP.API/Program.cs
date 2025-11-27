@@ -40,7 +40,7 @@ builder.Services.AddMediatR(cfg =>{
  });
 
  var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var secretKey = jwtSettings["Secret"];
+var secretKey = jwtSettings["SecretKey"];
 
 // --- 2. Add Authentication Services ---
 builder.Services.AddAuthentication(options =>
