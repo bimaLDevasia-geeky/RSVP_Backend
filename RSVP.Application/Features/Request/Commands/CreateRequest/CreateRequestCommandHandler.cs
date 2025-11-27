@@ -33,7 +33,7 @@ public class CreateRequestCommandHandler:IRequestHandler<CreateRequestCommand,in
 
        var Request = new Domain.Entities.Request(
             eventId: request.EventId,
-            userId: 2
+            userId: _currentUser.UserId
         );
 
 

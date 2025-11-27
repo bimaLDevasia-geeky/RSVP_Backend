@@ -16,12 +16,14 @@ public class CurrentUser:ICurrentUser
     {
         get
         {
-            var userIdString = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (int.TryParse(userIdString, out int userId))
-            {
-                return userId;
-            }
-            throw new Exception("User ID not found in the current context.");
+            //var userIdString = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            //if (int.TryParse(userIdString, out int userId))
+            //{
+            //    return userId;
+            //}
+            //throw new Exception("User ID not found in the current context.");
+
+            return 1002;
         }
     }
 

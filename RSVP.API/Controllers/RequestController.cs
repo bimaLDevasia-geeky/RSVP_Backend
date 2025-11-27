@@ -1,7 +1,10 @@
+using Azure.Core;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RSVP.Application.Features.Request.Commands.CreateRequest;
+using RSVP.Application.Features.Request.Commands.UpdateRequest;
+using RSVP.Domain.Enums;
 
 namespace RSVP.API.Controllers
 {
@@ -22,6 +25,16 @@ namespace RSVP.API.Controllers
         {
             var requestId = await _mediator.Send(command);
             return Ok(requestId);
+        }
+
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateRequestStatus(int id,UpdateRequestCommand command)
+        {
+            command.Id = id;
+
+            await _mediator.Send(command);
+            return NoContent();
         }
     }
 }
