@@ -13,6 +13,7 @@
   <ItemGroup>
     <Folder Include="Features\Event\Commands\DeleteEvent\" />
     <Folder Include="Features\Event\Queries\" />
+    <Folder Include="Features\Notification\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
