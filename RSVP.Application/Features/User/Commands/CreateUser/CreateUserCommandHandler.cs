@@ -19,7 +19,7 @@ public class CreateUserCommandHandler:IRequestHandler<CreateUserCommand,int>
         string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
         var user = new Domain.Entities.User(
             name: request.Name.Trim(),
-            email: request.Email.Trim().ToLowerInvariant(),
+            email: request.Email.Trim().ToLower(),
             hashedPassword: hashedPassword
         );
 
