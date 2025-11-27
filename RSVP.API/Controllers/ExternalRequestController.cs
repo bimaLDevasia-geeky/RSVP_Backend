@@ -4,18 +4,20 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RSVP.Application.Features.Request.Commands.CreateRequest;
 using RSVP.Application.Features.Request.Commands.UpdateRequest;
+using RSVP.Application.Features.Request.Queries.GetRequestsByEvent;
+//using RSVP.Application.Features.Request.Queries.GetRequestsByUser;
 using RSVP.Domain.Enums;
 
 namespace RSVP.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RequestController : ControllerBase
+    public class ExternalRequestController : ControllerBase
     {
         
         private readonly IMediator _mediator;
 
-        public RequestController(IMediator mediator)
+        public ExternalRequestController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -35,6 +37,27 @@ namespace RSVP.API.Controllers
 
             await _mediator.Send(command);
             return NoContent();
+        }
+
+
+        // [HttpGet("by-user")]
+        // public async Task<IActionResult> GetRequestsByUser()
+        // {
+        //     var query = new GetRequestsByUserQuery();
+        //     var requests = await _mediator.Send(query);
+        //     return Ok(requests);
+        // }
+
+
+        [HttpGet("event/{eventId}")]
+        public async Task<IActionResult> GetRequestsByEvent(int eventId)
+        {
+            var query = new GetRequestsByEventQuery
+            {
+                EventId = eventId
+            };
+            var requests = await _mediator.Send(query);
+            return Ok(requests);
         }
     }
 }
