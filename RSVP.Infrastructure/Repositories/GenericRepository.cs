@@ -38,7 +38,14 @@ public class GenericRepository<T> : IRepository<T> where T : class
     {
         _context.Set<T>().Remove(entity);
     }
-
+    public void DeleteRange(IEnumerable<T> entities)
+    {
+        _context.Set<T>().RemoveRange(entities);
+    }
+    public  IQueryable<T> QuerableAsync(CancellationToken cancellationToken = default)
+    {
+        return  _context.Set<T>().AsQueryable();
+    }
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         await _context.SaveChangesAsync(cancellationToken);

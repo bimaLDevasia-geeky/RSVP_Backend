@@ -10,5 +10,8 @@ public interface IRepository<T> where T: class
 
     Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken);
     void Delete(T entity);
+    void DeleteRange(IEnumerable<T> entities);
+
+    IQueryable<T> QuerableAsync(CancellationToken cancellationToken);
     Task SaveChangesAsync(CancellationToken cancellationToken);
 }
