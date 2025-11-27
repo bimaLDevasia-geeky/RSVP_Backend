@@ -1,11 +1,11 @@
-using System;
-using MediatR;
-using RSVP.Application.Dtos;
+// using System;
+// using MediatR;
+// using RSVP.Application.Dtos;
 
-namespace RSVP.Application.Features.Request.Queries.GetRequestsByUser;
+// namespace RSVP.Application.Features.Request.Queries.GetRequestsByUser;
 
-public class GetRequestsByUserQuery:IRequest<List<RequestDto>>
-{
+// public class GetRequestsByUserQuery:IRequest<List<RequestDto>>
+// {
 
 
-}
+// }

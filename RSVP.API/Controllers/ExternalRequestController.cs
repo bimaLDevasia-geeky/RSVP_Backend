@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RSVP.Application.Features.Request.Commands.CreateRequest;
 using RSVP.Application.Features.Request.Commands.UpdateRequest;
-using RSVP.Application.Features.Request.Queries.GetRequestsByUser;
+using RSVP.Application.Features.Request.Queries.GetRequestsByEvent;
+//using RSVP.Application.Features.Request.Queries.GetRequestsByUser;
 using RSVP.Domain.Enums;
 
 namespace RSVP.API.Controllers
@@ -39,10 +40,22 @@ namespace RSVP.API.Controllers
         }
 
 
-        [HttpGet("by-user")]
-        public async Task<IActionResult> GetRequestsByUser()
+        // [HttpGet("by-user")]
+        // public async Task<IActionResult> GetRequestsByUser()
+        // {
+        //     var query = new GetRequestsByUserQuery();
+        //     var requests = await _mediator.Send(query);
+        //     return Ok(requests);
+        // }
+
+
+        [HttpGet("event/{eventId}")]
+        public async Task<IActionResult> GetRequestsByEvent(int eventId)
         {
-            var query = new GetRequestsByUserQuery();
+            var query = new GetRequestsByEventQuery
+            {
+                EventId = eventId
+            };
             var requests = await _mediator.Send(query);
             return Ok(requests);
         }

@@ -9,5 +9,8 @@ public record RequestDto(
     int EventId,
     int UserId,
     DateTime RequestedAt,
-    RequestStatus Status
+    RequestStatus Status,
+
+    string UserName,
+    string EventName
 );
