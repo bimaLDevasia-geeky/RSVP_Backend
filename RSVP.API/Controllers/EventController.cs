@@ -27,7 +27,7 @@ namespace RSVP.API.Controllers
         public async Task<ActionResult<int>> CreateEvent([FromBody] CreateEventCommand request)
         {
              int result = await _mediator.Send(request);
-            return CreatedAtAction(nameof(GetEventById), new { id = result }, result);
+            return Ok(result);
         }
 
         [HttpPut("{eventId}")]
