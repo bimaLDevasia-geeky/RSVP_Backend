@@ -19,9 +19,10 @@ public class CurrentUser:ICurrentUser
             var userIdString = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (int.TryParse(userIdString, out int userId))
             {
-                return userId;
+               return userId;
             }
             throw new Exception("User ID not found in the current context.");
+
         }
     }
 
