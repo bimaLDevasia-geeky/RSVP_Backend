@@ -37,4 +37,17 @@ public class CurrentUser:ICurrentUser
             throw new Exception("User Role not found in the current context.");
         }
     }
+
+    public string RefreshToken
+    {
+        get
+        {
+            var refreshToken = _httpContextAccessor.HttpContext?.Request.Cookies["refreshToken"];
+            if (refreshToken != null)
+            {
+                return refreshToken;
+            }
+            throw new Exception("Refresh Token not found in the current context.");
+        }
+    }
 }

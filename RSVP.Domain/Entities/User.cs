@@ -15,6 +15,7 @@ public class User
     public ICollection<Request> Requests { get; private set; } = new List<Request>();
     public ICollection<Notification> Notifications { get; private set; } = new List<Notification>();
     public ICollection<Attendie> Attendies { get; private set; } = new List<Attendie>();
+    public ICollection<RefreshToken> RefreshTokens { get; private set; } = new List<RefreshToken>();
     
     public User(string name, string email, string hashedPassword)
     {
