@@ -42,5 +42,10 @@ public class AttendiesConfiguration:IEntityTypeConfiguration<Attendie>
 
         builder.Property(a => a.Status)
             .IsRequired();
+
+        builder.HasOne(a => a.User)
+            .WithMany(u => u.Attendies)
+            .HasForeignKey(a => a.UserId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

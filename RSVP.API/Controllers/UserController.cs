@@ -34,7 +34,7 @@ namespace RSVP.API.Controllers
             {
                 UserId = id
             };
-            var userDto = await _mediator.Send(query);
+            UserDataDto userDto = await _mediator.Send(query);
             return Ok(userDto);
         }
 
