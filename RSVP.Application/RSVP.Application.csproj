@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Request\Queries\" />
     <Folder Include="Features\Images\Query\" />
   </ItemGroup>
 
