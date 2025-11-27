@@ -19,7 +19,6 @@ public class GetEventOrgOrOwnQueryHandler:IRequestHandler<GetEventOrgOrOwnQuery,
     {
         int userId = _currentUserService.UserId;
         List<appDomain.Event> events = await _context.Events
-                                            .Include(e => e.Attendies)
                                             .AsNoTracking()
                                             .Where(e => e.CreatedBy == userId || e.Attendies.Any(a => a.UserId == userId&& a.Role ==AttendiesRole.Organizer))
                                             .ToListAsync();

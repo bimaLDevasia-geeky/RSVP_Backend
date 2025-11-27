@@ -19,13 +19,18 @@ public class EventAccessService: IEventAccessService
     public async Task<bool> IsOrganizerOrOwnerAsync(int eventId, CancellationToken ct)
     {
         
-        Attendie? attendie = await _context.Attendies
-            .FirstOrDefaultAsync(a => a.UserId == _currentUser.UserId && a.EventId == eventId && (a.Role == AttendiesRole.Organizer || a.Role == AttendiesRole.Owner), ct);
-        
-            if (attendie is null)
-            {
-                return false;
-            }
-            return true;
+        var userId = _currentUser.UserId;
+
+    
+    bool hasPermission = await _context.Events
+        .AsNoTracking()
+        .AnyAsync(e => 
+            e.Id == eventId &&
+            (
+                e.CreatedBy == userId || 
+                e.Attendies.Any(a => a.UserId == userId && a.Role == AttendiesRole.Organizer) 
+            ), ct);
+
+    return hasPermission;
     }
 }
