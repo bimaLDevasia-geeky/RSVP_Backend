@@ -8,9 +8,9 @@ namespace RSVP.Application.Features.Attendie.Command.AddAttendie;
 public class AddAttendieCommandHandler:IRequestHandler<AddAttendieCommand,int>
 {   
     private readonly IEventAccessService _eventAccessService;
-    private readonly IRepository<RSVP.Domain.Entities.Attendie> _attendieRepository;
+    private readonly IAttendieRepository _attendieRepository;
     private readonly IUserReposistory _userRepository;
-    public AddAttendieCommandHandler(IEventAccessService eventAccessService, IUserReposistory userRepository, IRepository<RSVP.Domain.Entities.Attendie> attendieRepository)
+    public AddAttendieCommandHandler(IEventAccessService eventAccessService, IUserReposistory userRepository, IAttendieRepository attendieRepository)
     {
         _eventAccessService = eventAccessService;
         _attendieRepository = attendieRepository;
@@ -29,6 +29,12 @@ public class AddAttendieCommandHandler:IRequestHandler<AddAttendieCommand,int>
         if (user == null)
         {
             throw new KeyNotFoundException($"User with ID {request.UserId} not found.");
+        }
+        appDomain.Attendie? existingAttendie = await _attendieRepository
+            .GetAttendieByEmailAndEventIdAsync(user.Email, request.EventId, cancellationToken);
+        if (existingAttendie != null)
+        {
+            throw new InvalidOperationException("Attendie with the same email already exists for this event.");
         }
         appDomain.Attendie newAttendie = new (
             request.EventId,
