@@ -31,6 +31,10 @@ public class EventConfiguration:IEntityTypeConfiguration<Event>
         builder.Property(e => e.CreatedBy)
             .IsRequired();
 
+        builder.HasIndex(e=>e.InviteCode)
+            .IsUnique();
+                
+
         
         builder.HasOne(e => e.Creator)
             .WithMany(u => u.CreatedEvents)

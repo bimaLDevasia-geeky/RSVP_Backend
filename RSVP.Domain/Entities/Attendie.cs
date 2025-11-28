@@ -25,7 +25,10 @@ public class Attendie
         UserId = userId.Value;
         Email = email;
     }
-
+    public void UpdateUserId(int userId)
+    {
+        UserId = userId;
+    }
     public void UpdateRole(AttendiesRole role)
     {
         Role = role;
