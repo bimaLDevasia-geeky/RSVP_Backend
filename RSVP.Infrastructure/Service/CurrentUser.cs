@@ -43,7 +43,7 @@ public class CurrentUser:ICurrentUser
     {
         get
         {
-            var refreshToken = _httpContextAccessor.HttpContext?.Request.Cookies["refreshToken"];
+            var refreshToken = _httpContextAccessor.HttpContext?.Request.Cookies["RefreshToken"];
             if (refreshToken != null)
             {
                 return refreshToken;

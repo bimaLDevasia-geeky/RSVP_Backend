@@ -25,7 +25,7 @@ namespace RSVP.API.Controllers
             LoginResultDto result = await _mediator.Send(request);
             return Ok(result);
         }
-        [Authorize]
+       
         [HttpPost("refresh")]
         public async Task<ActionResult> RefreshToken(RefreshAccessTokenCommand request)
         {

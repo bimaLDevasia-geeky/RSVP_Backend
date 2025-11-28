@@ -53,7 +53,7 @@ namespace RSVP.API.Controllers
             appDomain.Event result = await _mediator.Send(request);
             return Ok(result);
         }
-
+        [Authorize]
         [HttpGet("my-events")]
         public async Task<ActionResult<List<appDomain.Event>>> GetMyEvents()
         {

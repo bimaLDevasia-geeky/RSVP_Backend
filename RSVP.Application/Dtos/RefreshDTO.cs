@@ -1,6 +1,6 @@
 namespace RSVP.Application.Dtos;
 
-public record class RefreshDTO
+public record  RefreshDTO
 (
     string token
 );
