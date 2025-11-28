@@ -1,9 +1,11 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RSVP.Application.Dtos;
 using RSVP.Application.Features.User.Command.CreateUser;
 using RSVP.Application.Features.User.Command.UpdateUser;
+using RSVP.Application.Features.User.Queries.GetInviteRequests;
 using RSVP.Application.Features.User.Query;
 
 namespace RSVP.API.Controllers
@@ -20,6 +22,7 @@ namespace RSVP.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetUsers()
         {
           GetUsersQuery query = new GetUsersQuery();
@@ -28,6 +31,7 @@ namespace RSVP.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetUserById(int id)
         {
             GetUserByIdQuery query = new GetUserByIdQuery
@@ -51,7 +55,7 @@ namespace RSVP.API.Controllers
 
 
         [HttpPatch("{id}")]
-    
+        [Authorize]
         public async Task<IActionResult> UpdateUser(UpdateUserCommand command, int id)
         {
                 command.UserId = id;
@@ -59,6 +63,14 @@ namespace RSVP.API.Controllers
                 return NoContent();
         }
 
+        [HttpGet("invite-requests")]
+        [Authorize]
+        public async Task<IActionResult> GetInviteRequests()
+        {
+            GetInviteRequestsQuery query = new GetInviteRequestsQuery();
+            var inviteRequests = await _mediator.Send(query);
+            return Ok(inviteRequests);
+        }
 
     }
 }
