@@ -23,9 +23,11 @@ public class AddImageCommandHandler:IRequestHandler<AddImageCommand,bool>
         
         appDomain.Media newImage = new (
             request.EventId,
-            request.ImageUrl
+            request.ImageUrl,
+            publicId:"dms"
             );
         await _mediarepository.AddAsync(newImage,cancellationToken);
+        
         await  _mediarepository.SaveChangesAsync(cancellationToken);
         return true;
     }
