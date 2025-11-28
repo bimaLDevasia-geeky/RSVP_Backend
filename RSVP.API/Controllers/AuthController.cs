@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RSVP.Application.Dtos;
 using RSVP.Application.Features.Auth.Commands.Login;
+using RSVP.Application.Features.Auth.Commands.Logout;
 using RSVP.Application.Features.Auth.Commands.RefreshToken;
 
 namespace RSVP.API.Controllers
@@ -30,6 +31,14 @@ namespace RSVP.API.Controllers
         {
             
             RefreshDTO result = await _mediator.Send(request);
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<ActionResult<bool>> Logout(LogoutCommand request)
+        {
+            var result = await _mediator.Send(request);
             return Ok(result);
         }
     }

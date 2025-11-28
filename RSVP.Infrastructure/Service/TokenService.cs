@@ -80,4 +80,9 @@ public class TokenService:ITokenService
         };
         _httpContextAccessor.HttpContext.Response.Cookies.Append("RefreshToken", refreshToken.Token, cookieOptions);
     }
+
+    public void RemoveRefreshTokenFromCookies()
+    {
+        _httpContextAccessor.HttpContext.Response.Cookies.Delete("RefreshToken");
+    }
 }

@@ -8,4 +8,5 @@ public interface ITokenService
     public string GenerateAccessToken(int userId, string userEmail,string Role);
     public RefreshToken GenerateRefreshToken(int userId);
     public void SetRefreshTokenInCookies(RefreshToken refreshToken);
+    public void RemoveRefreshTokenFromCookies();
 }
