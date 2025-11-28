@@ -53,6 +53,9 @@ namespace RSVP.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
+                    b.HasIndex("Email", "EventId")
+                        .IsUnique();
+
                     b.ToTable("Attendies");
                 });
 
@@ -75,7 +78,7 @@ namespace RSVP.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("InviteCode")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
@@ -100,6 +103,10 @@ namespace RSVP.Infrastructure.Migrations
 
                     b.HasIndex("CreatedBy");
 
+                    b.HasIndex("InviteCode")
+                        .IsUnique()
+                        .HasFilter("[InviteCode] IS NOT NULL");
+
                     b.ToTable("Events");
                 });
 
@@ -113,6 +120,10 @@ namespace RSVP.Infrastructure.Migrations
 
                     b.Property<int>("EventId")
                         .HasColumnType("int");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
                         .IsRequired()

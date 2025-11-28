@@ -69,6 +69,21 @@ builder.Services.Configure<CloudinarySettings>(
 
 
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        name: "AllowAngularOrigins",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        });
+});
+
+
+
 builder.Services.AddScoped<IRsvpDbContext>(provider => provider.GetRequiredService<RsvpDbContext>());
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
@@ -107,6 +122,7 @@ app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+app.UseCors("AllowAngularOrigins");
 app.UseAuthentication();
 app.UseAuthorization();
 
