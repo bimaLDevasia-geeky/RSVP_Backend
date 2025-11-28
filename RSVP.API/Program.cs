@@ -64,7 +64,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
+builder.Services.Configure<CloudinarySettings>(
+    builder.Configuration.GetSection("CloudinarySettings"));
 
 
 
@@ -78,7 +79,7 @@ builder.Services.AddScoped<IUserReposistory, UserRepository>();
 builder.Services.AddScoped<IRefreshReposistary, RefreshReposistary>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IAttendieRepository, AttendieRepository>();
-
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddHttpContextAccessor();
