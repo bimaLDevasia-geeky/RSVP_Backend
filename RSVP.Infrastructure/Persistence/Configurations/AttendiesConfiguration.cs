@@ -28,7 +28,7 @@ public class AttendiesConfiguration:IEntityTypeConfiguration<Attendie>
 
         builder.Property(a => a.EventId)
             .IsRequired()
-;
+;       
 
         builder.Property(a => a.UserId)
             .IsRequired(false);
@@ -36,6 +36,9 @@ public class AttendiesConfiguration:IEntityTypeConfiguration<Attendie>
         builder.Property(a => a.Email)
             .IsRequired()
             .HasMaxLength(255);
+
+        builder.HasIndex(a => new { a.Email, a.EventId })
+            .IsUnique();
 
         builder.Property(a => a.Role)
             .IsRequired();
