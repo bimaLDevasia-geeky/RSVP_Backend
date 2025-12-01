@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using RSVP.Application.Dtos;
 using RSVP.Application.Interfaces;
+using RSVP.Domain.Enums;
 using appDomain= RSVP.Domain.Entities;
 
 namespace RSVP.Application.Features.Auth.Commands.RefreshToken;
@@ -37,10 +38,19 @@ public class RefreshAccessTokenCommandHandler:IRequestHandler<RefreshAccessToken
             }
 
             dbtoken.Revoke();
+            string role;
+        if (user.Role == UserRole.Admin)
+        {
+            role ="Admin";
+        }
+        else
+        {
+            role ="User";
+        }
+    
+            string newAccessToken = _tokenService.GenerateAccessToken(dbtoken.UserId, user.Email, role);
 
-            string newAccessToken = _tokenService.GenerateAccessToken(_currentUser.UserId, user.Email, _currentUser.Role);
-
-            appDomain.RefreshToken newRefreshToken = _tokenService.GenerateRefreshToken(_currentUser.UserId);
+            appDomain.RefreshToken newRefreshToken = _tokenService.GenerateRefreshToken(dbtoken.UserId);
             _tokenService.SetRefreshTokenInCookies(newRefreshToken);
             await _refreshTokenRepository.AddAsync(newRefreshToken,cancellationToken);
             await _refreshTokenRepository.SaveChangesAsync(cancellationToken);
