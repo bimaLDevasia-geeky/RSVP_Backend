@@ -8,7 +8,7 @@ namespace RSVP.Application.Features.Attendie.Queries.GetAttendiesViaEventFIlter;
 
 public class GetAttendiesViaEventFIlterQuery:IRequest<GetAttendiesViaEventFilterResponseDto>
 {   
-    [JsonIgnore]
-    public int EventId { get; set; }
+    
+     public int EventId { get; set; }
     public AttendiesStatus Status { get; set; }
 }

@@ -36,8 +36,8 @@ namespace RSVP.API.Controllers
             return Ok(result);
         }
 
-        [HttpPut("{attendieId}")]
-        public async Task<ActionResult<bool>> UpdateAttendie(int attendieId, [FromBody] UpdateAttendieCommand request)
+        [HttpPatch("{attendieId}")]
+        public async Task<ActionResult<bool>> UpdateAttendie(int attendieId,  UpdateAttendieCommand request)
         {
             request.AttendieId = attendieId;
             bool result = await _mediator.Send(request);
@@ -52,12 +52,11 @@ namespace RSVP.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("event/{eventId}")]
+        [HttpPost("filter")]
         public async Task<ActionResult<GetAttendiesViaEventFilterResponseDto>> GetAttendiesByEvent(
-            int eventId, 
-            [FromQuery] GetAttendiesViaEventFIlterQuery request)
+            [FromBody] GetAttendiesViaEventFIlterQuery request)
         {
-            request.EventId = eventId;
+            
             GetAttendiesViaEventFilterResponseDto result = await _mediator.Send(request);
             return Ok(result);
         }

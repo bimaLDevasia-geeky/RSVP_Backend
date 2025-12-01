@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using RSVP.Application.Dtos;
 using RSVP.Application.Features.User.Command.CreateUser;
 using RSVP.Application.Features.User.Command.UpdateUser;
+using RSVP.Application.Features.User.Queries.GetUserByName;
 using RSVP.Application.Features.User.Query;
 
 namespace RSVP.API.Controllers
@@ -58,7 +59,16 @@ namespace RSVP.API.Controllers
                 await _mediator.Send(command);
                 return NoContent();
         }
-
+        [HttpGet("search")]
+        public async Task<IActionResult> GetUserByName([FromQuery] string term)
+        {
+            GetUserByNameQuery query = new GetUserByNameQuery
+            {
+                Term = term
+            };
+            List<RSVP.Domain.Entities.User> users = await _mediator.Send(query);
+            return Ok(users);
+        }
 
     }
 }

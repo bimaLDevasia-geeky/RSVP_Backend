@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using RSVP.Application.Features.Images.Commands.AddImage;
 using RSVP.Application.Features.Images.Commands.AddImageInGroup;
 using RSVP.Application.Features.Images.Commands.DeleteImage;
+using RSVP.Application.Features.Images.Commands.DeleteImagesInGroup;
 using RSVP.Application.Features.Images.Query.GetImagesOfEvent;
 using RSVP.Domain.Entities;
 
@@ -33,6 +34,12 @@ namespace RSVP.API.Controllers
         {
             bool result = await _mediator.Send(request);
             return NoContent();
+        }
+        [HttpDelete("bulk")]
+        public async Task<IActionResult>leteImagesInGroup([FromBody] DeleteImagesInGroupCommand request)
+        {
+             bool result = await _mediator.Send(request);
+                return NoContent();
         }
 
         [HttpDelete("{imageId}")]

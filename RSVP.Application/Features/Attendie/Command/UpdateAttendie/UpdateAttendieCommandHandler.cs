@@ -21,21 +21,26 @@ public class UpdateAttendieCommandHandler:IRequestHandler<UpdateAttendieCommand,
         var attendie = await _attendieRepository.GetByIdAsync(request.AttendieId, cancellationToken);
         if (attendie == null)
         {
-            throw new Exception("Attendie not found");
+            throw new KeyNotFoundException("Attendie not found");
         }
 
         var hasAccess = await _eventAccessService.IsOrganizerOrOwnerAsync(attendie.EventId, cancellationToken);
-        if (attendie.UserId == _currentUser.UserId && request.Status.HasValue)
+        if ((attendie.UserId == _currentUser.UserId || hasAccess) && request.Status.HasValue)
         {
             attendie.UpdateStatus(request.Status.Value);
         }
-        else if(hasAccess && request.Role.HasValue)
+         else
+        {
+            throw new UnauthorizedAccessException("You do not have permission to update this attendie");
+           
+        }
+        if(hasAccess && request.Role.HasValue)
         {
             attendie.UpdateRole(request.Role.Value);
         }
         else
         {
-            throw new Exception("You do not have permission to update this attendie");
+            throw new UnauthorizedAccessException("You do not have permission to update this attendie");
            
         }
 

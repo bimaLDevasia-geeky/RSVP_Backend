@@ -24,14 +24,16 @@ namespace RSVP.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> CreateEvent([FromBody] CreateEventCommand request)
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<int>> CreateEvent([FromForm] CreateEventCommand request)
         {
              int result = await _mediator.Send(request);
             return Ok(result);
         }
 
         [HttpPut("{eventId}")]
-        public async Task<ActionResult<bool>> UpdateEvent(int eventId, [FromBody] UpdateEventCommand request)
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<bool>> UpdateEvent(int eventId, [FromForm] UpdateEventCommand request)
         {
             request.EventId = eventId;
              bool result = await _mediator.Send(request);

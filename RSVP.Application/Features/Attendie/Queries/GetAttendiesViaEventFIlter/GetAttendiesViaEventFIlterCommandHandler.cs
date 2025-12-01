@@ -26,7 +26,7 @@ public class GetAttendiesViaEventFIlterCommandHandler : IRequestHandler<GetAtten
             .ToListAsync(cancellationToken);
 
       
-        var filteredAttendies = allAttendies.Where(a => a.Status == request.Status).ToList();
+        
             
       
         var statusCounts = new StatusCountDto
@@ -39,7 +39,7 @@ public class GetAttendiesViaEventFIlterCommandHandler : IRequestHandler<GetAtten
 
         return new GetAttendiesViaEventFilterResponseDto
         {
-            Attendies = filteredAttendies,
+            Attendies = allAttendies,
             StatusCounts = statusCounts
         };
     }
