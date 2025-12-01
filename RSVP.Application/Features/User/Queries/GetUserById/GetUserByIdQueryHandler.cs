@@ -41,7 +41,7 @@ public async Task<UserDataDto> Handle(GetUserByIdQuery request, CancellationToke
         })
         .ToList();
 
-    EventDto MapEvent(Domain.Entities.Event e, AttendiesRole? role = null, AttendiesStatus? status = null)
+    EventDto MapEvent(Domain.Entities.Event e, AttendiesRole? role = null, AttendiesStatus? status = null,int? attendieId = null)
         => new()
         {
             Id = e.Id,
@@ -52,8 +52,10 @@ public async Task<UserDataDto> Handle(GetUserByIdQuery request, CancellationToke
             Time = e.Time,
             IsPublic = e.IsPublic,
             Status = e.Status,
+            attendieId = attendieId,
             MyRole = role,
             MyResponseStatus = status
+
         };
 
     var createdEvents = user.CreatedEvents
@@ -76,7 +78,8 @@ public async Task<UserDataDto> Handle(GetUserByIdQuery request, CancellationToke
         .Where(a => a.Event != null
                     && !createdEventIds.Contains(a.Event.Id)           
                     && a.Role != AttendiesRole.Organizer)          
-        .Select(a => MapEvent(a.Event!, a.Role, a.Status))
+        .Select(a => MapEvent(a.Event!, a.Role, a.Status,a.Id))
+        .OrderByDescending(e => e.MyResponseStatus == AttendiesStatus.NoResponse)
         .ToList();
 
     return new UserDataDto
@@ -84,6 +87,7 @@ public async Task<UserDataDto> Handle(GetUserByIdQuery request, CancellationToke
         Id = user.Id,
         Name = user.Name,
         Email = user.Email,
+        
 
         CreatedEvents = createdEvents,
         OrganizedEvents = organizedEvents,
