@@ -1,12 +1,14 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RSVP.Application.Dtos;
 using RSVP.Application.Features.Event.Commands.CreateEvent;
 using RSVP.Application.Features.Event.Commands.DeleteEvent;
 using RSVP.Application.Features.Event.Commands.UpdateEvent;
 using RSVP.Application.Features.Event.Queries.GetEventById;
 using RSVP.Application.Features.Event.Queries.GetEventOrgOrOwn;
 using RSVP.Application.Features.Event.Queries.GetInvitedEvents;
+using RSVP.Application.Features.Event.Queries.GetNonAttendies;
 using appDomain = RSVP.Domain.Entities;
 
 namespace RSVP.API.Controllers
@@ -67,6 +69,14 @@ namespace RSVP.API.Controllers
         {
              GetInvitedEventQuery request = new GetInvitedEventQuery();
             List<appDomain.Event> result = await _mediator.Send(request);
+            return Ok(result);
+        }
+
+        [HttpGet("non-attendies/{eventId}")]
+        public async Task<ActionResult<List<UserDto>>> GetNonAttendies(int eventId)
+        {
+             GetNonAttendiesQuery request = new GetNonAttendiesQuery { EventId = eventId };
+            List<UserDto> result = await _mediator.Send(request);
             return Ok(result);
         }
     }
