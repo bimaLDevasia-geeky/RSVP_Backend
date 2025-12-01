@@ -1,4 +1,5 @@
 using System;
+using RSVP.Domain.Entities;
 using RSVP.Domain.Enums;
 
 namespace RSVP.Application.Dtos;
@@ -14,6 +15,7 @@ public class EventDto
     public bool IsPublic { get; set; }
     public int? attendieId { get; set; }
     public string? CreatorName { get; set; }
+    public List<MediaDto> Media { get; init; } = new();
     public EventStatus Status { get; set; }
     public AttendiesRole? MyRole { get; set; }
     public AttendiesStatus? MyResponseStatus { get; set; }
