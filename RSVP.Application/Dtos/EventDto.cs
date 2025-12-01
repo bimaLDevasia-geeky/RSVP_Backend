@@ -13,6 +13,7 @@ public class EventDto
     public TimeOnly Time { get; set; }
     public bool IsPublic { get; set; }
     public int? attendieId { get; set; }
+    public string? CreatorName { get; set; }
     public EventStatus Status { get; set; }
     public AttendiesRole? MyRole { get; set; }
     public AttendiesStatus? MyResponseStatus { get; set; }
