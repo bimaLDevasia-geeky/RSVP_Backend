@@ -13,14 +13,19 @@ public class UpdateRequestCommandHandler:IRequestHandler<UpdateRequestCommand,bo
 
     private readonly IRepository<appDomain.Attendie> _attendieRepository;
     private readonly IRepository<Domain.Entities.User> _userRepository;
+
+    private readonly IRepository<Domain.Entities.Event> _eventRepository;
+    private readonly IRepository<Domain.Entities.Notification> _notificationRepository;
     private readonly IRsvpDbContext _context;
 
 
-    public UpdateRequestCommandHandler(IRepository<Domain.Entities.Request> requestRepository, IRepository<appDomain.Attendie> attendieRepository,IRepository<Domain.Entities.User> userRepository, IRsvpDbContext context)
+    public UpdateRequestCommandHandler(IRepository<Domain.Entities.Request> requestRepository, IRepository<appDomain.Attendie> attendieRepository,IRepository<Domain.Entities.User> userRepository, IRepository<Domain.Entities.Event> eventRepository, IRepository<Domain.Entities.Notification> notificationRepository, IRsvpDbContext context)
     {
         _requestRepository = requestRepository;
         _attendieRepository = attendieRepository;
         _userRepository = userRepository;
+        _eventRepository = eventRepository;
+        _notificationRepository = notificationRepository;
         _context = context;
     }
 
@@ -40,6 +45,7 @@ public class UpdateRequestCommandHandler:IRequestHandler<UpdateRequestCommand,bo
             requestToUpdate.UpdateStatus(RequestStatus.Accepted);
             
             string userEmail = (await _userRepository.GetByIdAsync(requestToUpdate.UserId, cancellationToken))?.Email ?? throw new KeyNotFoundException("User not found.");
+            string EventName = (await _eventRepository.GetByIdAsync(requestToUpdate.EventId, cancellationToken))?.Name ?? "Unknown Event";
             
             var existingAttendie = await _context.Attendies
                 .AnyAsync(a => a.EventId == requestToUpdate.EventId && a.UserId == requestToUpdate.UserId, cancellationToken);
@@ -57,6 +63,17 @@ public class UpdateRequestCommandHandler:IRequestHandler<UpdateRequestCommand,bo
             newAttendie.UpdateStatus(AttendiesStatus.Attending);
             
             await _attendieRepository.AddAsync(newAttendie, cancellationToken);
+            
+
+            var notification = new Domain.Entities.Notification
+            (
+                requestToUpdate.UserId,
+                $"Your request to join the event {EventName} has been accepted.",
+                $"/events/{requestToUpdate.EventId}"
+            );
+
+            await _notificationRepository.AddAsync(notification, cancellationToken);
+
         }
         else if(request.Status == RequestStatus.Rejected)
         {
