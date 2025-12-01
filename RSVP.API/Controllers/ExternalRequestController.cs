@@ -1,5 +1,6 @@
 using Azure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RSVP.Application.Features.Request.Commands.CreateRequest;
@@ -12,6 +13,7 @@ namespace RSVP.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ExternalRequestController : ControllerBase
     {
         
@@ -39,14 +41,6 @@ namespace RSVP.API.Controllers
             return NoContent();
         }
 
-
-        // [HttpGet("by-user")]
-        // public async Task<IActionResult> GetRequestsByUser()
-        // {
-        //     var query = new GetRequestsByUserQuery();
-        //     var requests = await _mediator.Send(query);
-        //     return Ok(requests);
-        // }
 
 
         [HttpGet("event/{eventId}")]
