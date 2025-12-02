@@ -28,6 +28,7 @@ public class UpdateAttendieCommandHandler:IRequestHandler<UpdateAttendieCommand,
         if (attendie.UserId == _currentUser.UserId && request.Status.HasValue)
         {
             attendie.UpdateStatus(request.Status.Value);
+            attendie.UpdateUserId(_currentUser.UserId);
         }
         else if(hasAccess && request.Role.HasValue)
         {
