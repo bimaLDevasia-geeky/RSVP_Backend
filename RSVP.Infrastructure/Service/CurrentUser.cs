@@ -39,6 +39,19 @@ public class CurrentUser:ICurrentUser
         }
     }
 
+    public string Email
+    {
+        get
+        {
+            var email = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
+            if (email != null)
+            {
+                return email;
+            }
+            return string.Empty;
+        }
+    }
+
     public string RefreshToken
     {
         get
