@@ -2,6 +2,7 @@ using System;
 using System.Reflection.Metadata;
 using RSVP.Domain.Enums;
 using System.Security.Cryptography;
+using System.Text.Json.Serialization;
 
 namespace RSVP.Domain.Entities;
 

@@ -8,5 +8,6 @@ public class GetNonAttendiesQuery:IRequest<List<UserDto>>
 {
 
 public int EventId { get; set; }
+public string Term { get; set; }=null!;
 
 }

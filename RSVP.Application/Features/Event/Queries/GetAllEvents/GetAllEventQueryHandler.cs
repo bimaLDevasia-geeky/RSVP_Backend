@@ -18,6 +18,7 @@ public class GetAllEventQueryHandler:IRequestHandler<GetAllEventQuery, List<appD
     public async Task<List<appDomain.Event>> Handle(GetAllEventQuery request, CancellationToken cancellationToken)
     {
         IEnumerable<appDomain.Event> events = await _context.Events
+                                                    .Include(e=>e.Media)
                                                     .AsNoTracking()
                                                     .ToListAsync(cancellationToken);
         return events.ToList();

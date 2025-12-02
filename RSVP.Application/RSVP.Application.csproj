@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Features\User\Queries\GetUserByName\GetUserByNameQuerycs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\RSVP.Domain\RSVP.Domain.csproj" />
   </ItemGroup>
 

@@ -1,5 +1,7 @@
 using System.Text.Json.Serialization;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using RSVP.Application.Dtos;
 using RSVP.Domain.Enums;
 
 namespace RSVP.Application.Features.Event.Commands.UpdateEvent;
@@ -16,4 +18,7 @@ public record class UpdateEventCommand:IRequest<bool>
     public bool? IsPublic { get; set; }
 
     public EventStatus? Status { get; set; }
+    
+    public List<ImageDeleteDto>? ImagesToDelete { get; set; }
+    public List<IFormFile>? NewImages { get; set; }
 }

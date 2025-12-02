@@ -53,6 +53,6 @@ public class AddAttendieByGroupCommandHandler:IRequestHandler<AddAttendieByGroup
         }
         
 
-        throw new NotImplementedException();
+        return true;
     }
 }

@@ -1,4 +1,4 @@
-using System;
+
 using System.Text.Json.Serialization;
 using MediatR;
 using RSVP.Domain.Enums;

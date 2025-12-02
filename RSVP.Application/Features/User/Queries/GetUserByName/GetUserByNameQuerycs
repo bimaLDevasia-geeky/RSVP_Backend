@@ -1,0 +1,9 @@
+using System;
+using MediatR;
+using appDomain = RSVP.Domain.Entities;
+namespace RSVP.Application.Features.User.Queries.GetUserByName;
+
+public class GetUserByNameQuery:IRequest<List<appDomain.User>>
+{
+public string Term { get; set; } =null!;
+}

@@ -20,13 +20,13 @@ public class GetAttendiesViaEventFIlterCommandHandler : IRequestHandler<GetAtten
     {
        
         var allAttendies = await _context.Attendies
-            .Where(a => a.EventId == request.EventId)
+            .AsNoTracking()
             .Include(a => a.User)
-            .Include(a => a.Event)
+            .Where(a => a.EventId == request.EventId)
             .ToListAsync(cancellationToken);
 
       
-        var filteredAttendies = allAttendies.Where(a => a.Status == request.Status).ToList();
+        
             
       
         var statusCounts = new StatusCountDto
@@ -39,7 +39,7 @@ public class GetAttendiesViaEventFIlterCommandHandler : IRequestHandler<GetAtten
 
         return new GetAttendiesViaEventFilterResponseDto
         {
-            Attendies = filteredAttendies,
+            Attendies = allAttendies,
             StatusCounts = statusCounts
         };
     }

@@ -17,6 +17,8 @@ public class GetEventByIdQueryHandler: IRequestHandler<GetEventByIdQuery, appDom
     public async Task<appDomain.Event> Handle(GetEventByIdQuery request, CancellationToken cancellationToken)
     {
         appDomain.Event? evnt = await _context.Events
+                                            .Include(e=>e.Media)
+                                            .Include(e=>e.Attendies)
                                             .AsNoTracking()
                                             .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
         if (evnt is null)
