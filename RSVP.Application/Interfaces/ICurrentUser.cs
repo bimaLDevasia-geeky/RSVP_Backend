@@ -8,6 +8,8 @@ public interface ICurrentUser
 
     string Role { get;  }
 
+    string Email { get; }
+
     string RefreshToken { get; }
     
 }

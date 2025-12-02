@@ -12,14 +12,27 @@ public class GetEventByInviteIdQueryHandler:IRequestHandler<GetEventByInviteIdQu
 
     private readonly IRsvpDbContext _context;
 
+    private readonly ICurrentUser? _currentUser = null;
 
-    public GetEventByInviteIdQueryHandler(IRsvpDbContext context)
+    private bool isAttendee = false;
+
+    public GetEventByInviteIdQueryHandler(IRsvpDbContext context, ICurrentUser? currentUser)
     {
         _context = context;
+        _currentUser = currentUser;
     }
 
     public async Task<EventDto> Handle(GetEventByInviteIdQuery request, CancellationToken cancellationToken)
     {
+
+        if(_currentUser != null)
+        {
+
+            isAttendee = await _context.Attendies.
+                    AsNoTracking()
+                    .AnyAsync(a => a.Event.InviteCode == request.InviteCode 
+                     && a.Email == _currentUser.Email);
+        }
 
 
         var result = await _context.Events
@@ -35,6 +48,7 @@ public class GetEventByInviteIdQueryHandler:IRequestHandler<GetEventByInviteIdQu
                Venue = e.Venue,
                IsPublic = e.IsPublic,
                 Status = e.Status,
+                isAttendee = isAttendee,
                Media = e.Media.Select(m => new MediaDto(m.Id, m.Url)).ToList(),
                CreatorName = _context.Users.Where(u => u.Id == e.CreatedBy).Select(u => u.Name).FirstOrDefault()
            }).FirstOrDefaultAsync(cancellationToken);
