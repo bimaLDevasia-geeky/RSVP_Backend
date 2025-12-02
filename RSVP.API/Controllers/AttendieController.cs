@@ -7,7 +7,8 @@ using RSVP.Application.Features.Attendie.Command.AddAttendieByGroup;
 using RSVP.Application.Features.Attendie.Command.DeleteAttendie;
 using RSVP.Application.Features.Attendie.Command.UpdateAttendie;
 using RSVP.Application.Features.Attendie.Queries.GetAttendiesViaEventFIlter;
-
+using RSVP.Application.Features.Attendie.Queries.GetAttendieViaUserid;
+using appDomain = RSVP.Domain.Entities;
 namespace RSVP.API.Controllers
 {
     [Route("api/[controller]")]
@@ -20,6 +21,17 @@ namespace RSVP.API.Controllers
         public AttendieController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+        [HttpGet("user")]
+        public async Task<ActionResult<appDomain.Attendie>> GetAttendieViaUserId([FromQuery] int userId, [FromQuery] int eventId)
+        {
+            GetAttendieViaUseridQuery query = new GetAttendieViaUseridQuery { UserId = userId, EventId = eventId };
+            var attendie = await _mediator.Send(query);
+            if (attendie is null)
+            {
+                return NotFound();
+            }
+            return Ok(attendie);
         }
 
         [HttpPost]

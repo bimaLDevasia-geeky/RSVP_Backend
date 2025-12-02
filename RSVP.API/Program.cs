@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
 using RSVP.API.MIddleware;
+using Hangfire;
 {
     
 }
@@ -83,6 +84,22 @@ builder.Services.AddCors(options =>
 });
 
 
+builder.Services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseSqlServerStorage(builder.Configuration.GetConnectionString("RsvpConnectionString"), new Hangfire.SqlServer.SqlServerStorageOptions
+    {
+        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+        QueuePollInterval = TimeSpan.Zero,
+        UseRecommendedIsolationLevel = true,
+        DisableGlobalLocks = true
+    }));
+
+builder.Services.AddHangfireServer();
+
+
 
 builder.Services.AddScoped<IRsvpDbContext>(provider => provider.GetRequiredService<RsvpDbContext>());
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
@@ -118,6 +135,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseHangfireDashboard("/hangfire");
+  
+RecurringJob.AddOrUpdate<SentNotification>(
+    "SendEventReminderNotifications",
+    job => job.SentNotificationToUser(),
+     "*/10 * * * * *" );
 
 app.UseHttpsRedirection();
 

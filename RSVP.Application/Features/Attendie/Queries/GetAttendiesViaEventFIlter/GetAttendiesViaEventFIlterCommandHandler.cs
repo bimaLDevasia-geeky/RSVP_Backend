@@ -20,9 +20,9 @@ public class GetAttendiesViaEventFIlterCommandHandler : IRequestHandler<GetAtten
     {
        
         var allAttendies = await _context.Attendies
-            .Where(a => a.EventId == request.EventId)
+            .AsNoTracking()
             .Include(a => a.User)
-            .Include(a => a.Event)
+            .Where(a => a.EventId == request.EventId)
             .ToListAsync(cancellationToken);
 
       

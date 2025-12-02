@@ -25,28 +25,30 @@ public class UpdateAttendieCommandHandler:IRequestHandler<UpdateAttendieCommand,
         }
 
         var hasAccess = await _eventAccessService.IsOrganizerOrOwnerAsync(attendie.EventId, cancellationToken);
-        if ((attendie.UserId == _currentUser.UserId || hasAccess) && request.Status.HasValue)
+        var isOwnAttendee = attendie.UserId == _currentUser.UserId;
+
+        // Update status - allowed if user is the attendee or has organizer/owner access
+        if (request.Status.HasValue)
         {
+            if (!isOwnAttendee && !hasAccess)
+            {
+                throw new UnauthorizedAccessException("You do not have permission to update this attendee's status");
+            }
             attendie.UpdateStatus(request.Status.Value);
+            attendie.UpdateUserId(_currentUser.UserId);
         }
-         else
+        
+        // Update role - only allowed for organizers/owners
+        if (request.Role.HasValue)
         {
-            throw new UnauthorizedAccessException("You do not have permission to update this attendie");
-           
-        }
-        if(hasAccess && request.Role.HasValue)
-        {
+            if (!hasAccess)
+            {
+                throw new UnauthorizedAccessException("You do not have permission to update this attendee's role");
+            }
             attendie.UpdateRole(request.Role.Value);
         }
-        else
-        {
-            throw new UnauthorizedAccessException("You do not have permission to update this attendie");
-           
-        }
 
-
-        await _attendieRepository.SaveChangesAsync( cancellationToken);
+        await _attendieRepository.SaveChangesAsync(cancellationToken);
         return true;
-        
     }
 }
