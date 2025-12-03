@@ -14,6 +14,7 @@ public class EventDto
     public TimeOnly Time { get; set; }
     public bool IsPublic { get; set; }
     public int? attendieId { get; set; }
+    public int? CreatedBy { get; set; }
     public string? CreatorName { get; set; }
     public List<MediaDto> Media { get; init; } = new();
     public EventStatus Status { get; set; }

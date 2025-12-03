@@ -22,7 +22,7 @@ namespace RSVP.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize (Roles ="Admin")]
         public async Task<IActionResult> GetUsers()
         {
           GetUsersQuery query = new GetUsersQuery();
