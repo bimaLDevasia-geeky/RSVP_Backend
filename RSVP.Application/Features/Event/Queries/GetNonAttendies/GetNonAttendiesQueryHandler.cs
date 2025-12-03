@@ -37,7 +37,7 @@ public class GetNonAttendiesQueryHandler : IRequestHandler<GetNonAttendiesQuery,
         var nonAttendies = await _context.Users
                 .AsNoTracking()
                 .Where(u => u.Role != UserRole.Admin && !attendeeIdsQuery.Contains(u.Id) && u.Id != evnt!.CreatedBy && u.Name.Contains(request.Term))
-                .Select(u => new UserDto(u.Id, u.Name, u.Email))
+                .Select(u => new UserDto(u.Id, u.Name, u.Email, u.Status))
                 .ToListAsync(cancellationToken);
 
         return nonAttendies;

@@ -18,10 +18,11 @@ public class GetInvitedEventQueryHandler:IRequestHandler<GetInvitedEventQuery,Li
     public async Task<List<appDomain.Event>> Handle(GetInvitedEventQuery request, CancellationToken cancellationToken)
     {
         int userId = _currentUserService.UserId;
+        string emailId = _currentUserService.Email;
         List<appDomain.Event> events = await _context.Events
                                             .Include(e=>e.Media)
                                             .AsNoTracking()
-                                            .Where(e =>e.CreatedBy != userId && e.Attendies.Any(a => a.UserId == userId && (a.Role != Domain.Enums.AttendiesRole.Organizer)))
+                                            .Where(e =>e.CreatedBy != userId && e.Attendies.Any(a => a.Email == emailId && (a.Role != Domain.Enums.AttendiesRole.Organizer)) && !(e.Status == Domain.Enums.EventStatus.Completed))
                                             .ToListAsync(cancellationToken);
         return events;
     }

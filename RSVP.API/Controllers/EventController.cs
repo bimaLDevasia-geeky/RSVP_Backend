@@ -5,9 +5,12 @@ using RSVP.Application.Dtos;
 using RSVP.Application.Features.Event.Commands.CreateEvent;
 using RSVP.Application.Features.Event.Commands.DeleteEvent;
 using RSVP.Application.Features.Event.Commands.UpdateEvent;
+using RSVP.Application.Features.Event.Commands.UpdateEventStatus;
+using RSVP.Application.Features.Event.Queries;
 using RSVP.Application.Features.Event.Queries.GetEventById;
 using RSVP.Application.Features.Event.Queries.GetEventOrgOrOwn;
 using RSVP.Application.Features.Event.Queries.GetInvitedEvents;
+using RSVP.Application.Features.Event.Queries.GetInvitedEventsByEmail;
 using RSVP.Application.Features.Event.Queries.GetNonAttendies;
 using appDomain = RSVP.Domain.Entities;
 
@@ -23,6 +26,14 @@ namespace RSVP.API.Controllers
         public EventController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<EventDto>>> GetAllEvents()
+        {
+             GetAllEventQuery request = new GetAllEventQuery();
+            List<EventDto> result = await _mediator.Send(request);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -81,5 +92,24 @@ namespace RSVP.API.Controllers
             List<UserDto> result = await _mediator.Send(request);
             return Ok(result);
         }
+
+
+        [HttpGet("InvitedByEmail")]
+        public async Task<ActionResult<List<AttendieDto>>> GetInvitedEventsByEmail()
+        {
+             GetInvitedEventsByEmailQuery request = new GetInvitedEventsByEmailQuery {  };
+            List<AttendieDto> result = await _mediator.Send(request);
+            return Ok(result);
+        }
+
+        [HttpPatch("update-status/{eventId}")]
+    
+        public async Task<ActionResult> UpdateEventStatus(int eventId, [FromBody] UpdateEventStatusCommand request)
+         {
+             request.EventId = eventId;
+            await _mediator.Send(request);
+             return NoContent();
+        }
+
     }
 }

@@ -2,6 +2,7 @@ using System;
 using MediatR;
 using RSVP.Application.Dtos;
 using RSVP.Application.Interfaces;
+using RSVP.Domain.Enums;
 
 namespace RSVP.Application.Features.User.Query;
 
@@ -19,10 +20,11 @@ public class GetUsersQueryHandler:IRequestHandler<GetUsersQuery,List<UserDto>>
     {
         var users = await _userRepository.GetAllAsync(cancellationToken);
 
-       List<UserDto> userDtos = users.Select(user => new UserDto(
+       List<UserDto> userDtos = users.Where(user => user.Role == UserRole.User && user.Status!=UserStatus.Deleted).Select(user => new UserDto(
             user.Id,
             user.Name,
-            user.Email
+            user.Email,
+            user.Status
         )).ToList();
 
          return userDtos;
