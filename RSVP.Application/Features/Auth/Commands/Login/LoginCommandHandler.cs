@@ -28,6 +28,14 @@ public class LoginCommandHandler:IRequestHandler<LoginCommand,LoginResultDto>
     {
         
         appDomain.User? user = await _userRepository.GetUserByEmailAsync(request.Email, cancellationToken);
+        if (user != null && user.Status == UserStatus.Banned)
+        {
+            throw new UnauthorizedAccessException("Your account has been banned");
+        }
+        if (user != null && user.Status == UserStatus.Deleted)
+        {
+            throw new UnauthorizedAccessException("This account does not exist.");
+        }
         if (user == null || BCrypt.Net.BCrypt.Verify(request.Password, user.HashedPassword) == false)
         {
             throw new UnauthorizedAccessException("Invalid email or password.");

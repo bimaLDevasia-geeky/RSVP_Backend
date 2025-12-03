@@ -16,6 +16,7 @@ public class CreateUserCommandHandler:IRequestHandler<CreateUserCommand,int>
 
     public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
+        
         string hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password);
         var user = new Domain.Entities.User(
             name: request.Name.Trim(),
