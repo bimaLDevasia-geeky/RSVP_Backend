@@ -13,5 +13,6 @@ public interface IRsvpDbContext
     public DbSet<Notification> Notifications { get;  }
     public DbSet<Request> Requests { get;  }
     public DbSet<RefreshToken> RefreshTokens { get;  }
+    public DbSet<ChatMessage> ChatMessages { get;  }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

@@ -1,6 +1,7 @@
 using System;
 using MediatR;
 using RSVP.Application.Interfaces;
+using RSVP.Domain.Enums;
 using appDomain=RSVP.Domain.Entities;
 namespace RSVP.Application.Features.Attendie.Command.UpdateAttendie;
 
@@ -25,7 +26,7 @@ public class UpdateAttendieCommandHandler:IRequestHandler<UpdateAttendieCommand,
         }
 
         var hasAccess = await _eventAccessService.IsOrganizerOrOwnerAsync(attendie.EventId, cancellationToken);
-        var isOwnAttendee = attendie.UserId == _currentUser.UserId;
+        var isOwnAttendee = attendie.Email == _currentUser.Email;
 
         // Update status - allowed if user is the attendee or has organizer/owner access
         if (request.Status.HasValue)
@@ -35,9 +36,9 @@ public class UpdateAttendieCommandHandler:IRequestHandler<UpdateAttendieCommand,
                 throw new UnauthorizedAccessException("You do not have permission to update this attendee's status");
             }
             attendie.UpdateStatus(request.Status.Value);
-            attendie.UpdateUserId(_currentUser.UserId);
         }
-        
+            if (isOwnAttendee && request.Status !=AttendiesStatus.NoResponse)
+            attendie.UpdateUserId(_currentUser.UserId);
         // Update role - only allowed for organizers/owners
         if (request.Role.HasValue)
         {

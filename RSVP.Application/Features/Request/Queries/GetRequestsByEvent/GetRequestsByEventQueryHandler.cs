@@ -27,13 +27,14 @@ public class GetRequestsByEventQueryHandler:IRequestHandler<GetRequestsByEventQu
         string eventName = (await _eventRepository.GetByIdAsync(request.EventId, cancellationToken))?.Name ?? "Unknown Event";
         var requests = await _context.Requests
             .Where(r => r.EventId == request.EventId && r.Status == Domain.Enums.RequestStatus.Pending)
+            .Include(r => r.User)
             .Select(r => new RequestDto(
                 r.Id,
                 r.EventId,
                 r.UserId,
                 r.RequestedAt,
                 r.Status,
-                userName,
+                r.User.Name,
                 eventName
             ))
             .ToListAsync(cancellationToken);

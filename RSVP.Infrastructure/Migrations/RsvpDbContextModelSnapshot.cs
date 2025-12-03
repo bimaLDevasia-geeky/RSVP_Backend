@@ -59,6 +59,42 @@ namespace RSVP.Infrastructure.Migrations
                     b.ToTable("Attendies");
                 });
 
+            modelBuilder.Entity("RSVP.Domain.Entities.ChatMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("EventId", "Timestamp");
+
+                    b.ToTable("ChatMessages");
+                });
+
             modelBuilder.Entity("RSVP.Domain.Entities.Event", b =>
                 {
                     b.Property<int>("Id")
@@ -261,6 +297,8 @@ namespace RSVP.Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
+                    b.HasIndex("Name");
+
                     b.ToTable("Users");
                 });
 
@@ -276,6 +314,25 @@ namespace RSVP.Infrastructure.Migrations
                         .WithMany("Attendies")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Event");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RSVP.Domain.Entities.ChatMessage", b =>
+                {
+                    b.HasOne("RSVP.Domain.Entities.Event", "Event")
+                        .WithMany("Chats")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RSVP.Domain.Entities.User", "User")
+                        .WithMany("Chats")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Event");
 
@@ -349,6 +406,8 @@ namespace RSVP.Infrastructure.Migrations
                 {
                     b.Navigation("Attendies");
 
+                    b.Navigation("Chats");
+
                     b.Navigation("Media");
 
                     b.Navigation("Requests");
@@ -357,6 +416,8 @@ namespace RSVP.Infrastructure.Migrations
             modelBuilder.Entity("RSVP.Domain.Entities.User", b =>
                 {
                     b.Navigation("Attendies");
+
+                    b.Navigation("Chats");
 
                     b.Navigation("CreatedEvents");
 
