@@ -16,6 +16,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using RSVP.API.MIddleware;
 using Hangfire;
+using RSVP.API.Hubs;
 {
     
 }
@@ -62,6 +63,22 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
+    };
+    
+    // Configure JWT for SignalR
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+            
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chatHub"))
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        }
     };
 });
 
@@ -122,6 +139,7 @@ builder.Services.AddControllers()
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
+builder.Services.AddSignalR();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -141,7 +159,12 @@ app.UseHangfireDashboard("/hangfire");
 RecurringJob.AddOrUpdate<SentNotification>(
     "SendEventReminderNotifications",
     job => job.SentNotificationToUser(),
-     "*/10 * * * * *" );
+    Cron.Daily);
+
+RecurringJob.AddOrUpdate<UpdateEventDaily>(
+    "UpdateEventStatusesDaily",
+    job => job.UpdateEventStatusDaily(),
+    Cron.Daily);
 
 app.UseHttpsRedirection();
 
@@ -151,6 +174,7 @@ app.UseCors("AllowAngularOrigins");
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapHub<ChatHub>("/chatHub");
 app.MapControllers();
 
 app.Run();

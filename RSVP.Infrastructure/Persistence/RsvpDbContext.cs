@@ -18,6 +18,7 @@ public class RsvpDbContext:DbContext, IRsvpDbContext
     public DbSet<Notification> Notifications { get; set; } = null!;
     public DbSet<Request> Requests { get; set; } = null!;
     public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
+    public DbSet<ChatMessage> ChatMessages { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
