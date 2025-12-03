@@ -11,15 +11,17 @@ public class GetUserByIdQueryHandler:IRequestHandler<GetUserByIdQuery,UserDataDt
 {
 
    private readonly IRsvpDbContext _context;
+   private readonly ICurrentUser _currentUser;
 
-    public GetUserByIdQueryHandler(IRsvpDbContext context)
+    public GetUserByIdQueryHandler(IRsvpDbContext context, ICurrentUser currentUser)
     {
         _context = context;
+        _currentUser = currentUser;
     }
     
 public async Task<UserDataDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
 {
-    var userId = request.UserId;
+    var userId = _currentUser.UserId;
 
     var user = await _context.Users
         .AsNoTracking()
