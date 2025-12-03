@@ -15,7 +15,6 @@ public class EventDto
     public bool IsPublic { get; set; }
     public int? attendieId { get; set; }
     public string? CreatorName { get; set; }
-    public bool? isAttendee { get; set; } = null;
     public List<MediaDto> Media { get; init; } = new();
     public EventStatus Status { get; set; }
     public AttendiesRole? MyRole { get; set; }

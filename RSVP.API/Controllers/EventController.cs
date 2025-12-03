@@ -8,6 +8,7 @@ using RSVP.Application.Features.Event.Commands.UpdateEvent;
 using RSVP.Application.Features.Event.Queries.GetEventById;
 using RSVP.Application.Features.Event.Queries.GetEventOrgOrOwn;
 using RSVP.Application.Features.Event.Queries.GetInvitedEvents;
+using RSVP.Application.Features.Event.Queries.GetInvitedEventsByEmail;
 using RSVP.Application.Features.Event.Queries.GetNonAttendies;
 using appDomain = RSVP.Domain.Entities;
 
@@ -79,6 +80,15 @@ namespace RSVP.API.Controllers
         {
              GetNonAttendiesQuery request = new GetNonAttendiesQuery { EventId = eventId, Term = term };
             List<UserDto> result = await _mediator.Send(request);
+            return Ok(result);
+        }
+
+
+        [HttpGet("InvitedByEmail")]
+        public async Task<ActionResult<List<AttendieDto>>> GetInvitedEventsByEmail()
+        {
+             GetInvitedEventsByEmailQuery request = new GetInvitedEventsByEmailQuery {  };
+            List<AttendieDto> result = await _mediator.Send(request);
             return Ok(result);
         }
     }

@@ -26,13 +26,14 @@ public class UpdateAttendieCommandHandler:IRequestHandler<UpdateAttendieCommand,
 
         var hasAccess = await _eventAccessService.IsOrganizerOrOwnerAsync(attendie.EventId, cancellationToken);
         var isOwnAttendee = attendie.UserId == _currentUser.UserId;
+        var isOwnAttendeeEmail = attendie.Email == _currentUser.Email;
 
         // Update status - allowed if user is the attendee or has organizer/owner access
         if (request.Status.HasValue)
         {
-            if (!isOwnAttendee && !hasAccess)
+            if (!isOwnAttendee && !isOwnAttendeeEmail && !hasAccess)
             {
-                throw new UnauthorizedAccessException("You do not have permission to update this attendee's status");
+                throw new UnauthorizedAccessException("You do not have permission to update this attendee's status"+isOwnAttendeeEmail);
             }
             attendie.UpdateStatus(request.Status.Value);
             attendie.UpdateUserId(_currentUser.UserId);

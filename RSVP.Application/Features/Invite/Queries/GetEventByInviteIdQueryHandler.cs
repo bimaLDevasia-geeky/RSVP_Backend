@@ -14,7 +14,8 @@ public class GetEventByInviteIdQueryHandler:IRequestHandler<GetEventByInviteIdQu
 
     private readonly ICurrentUser? _currentUser = null;
 
-    private bool isAttendee = false;
+
+    private int attendieId = 0;
 
     public GetEventByInviteIdQueryHandler(IRsvpDbContext context, ICurrentUser? currentUser)
     {
@@ -28,10 +29,12 @@ public class GetEventByInviteIdQueryHandler:IRequestHandler<GetEventByInviteIdQu
         if(_currentUser != null)
         {
 
-            isAttendee = await _context.Attendies.
-                    AsNoTracking()
-                    .AnyAsync(a => a.Event.InviteCode == request.InviteCode 
-                     && a.Email == _currentUser.Email);
+            attendieId = await _context.Attendies
+                    .AsNoTracking()
+                    .Where(a => a.Event.InviteCode == request.InviteCode 
+                     && a.Email == _currentUser.Email)
+                    .Select(a => a.Id)
+                    .FirstOrDefaultAsync(cancellationToken);
         }
 
 
@@ -48,7 +51,7 @@ public class GetEventByInviteIdQueryHandler:IRequestHandler<GetEventByInviteIdQu
                Venue = e.Venue,
                IsPublic = e.IsPublic,
                 Status = e.Status,
-                isAttendee = isAttendee,
+                attendieId = attendieId,
                Media = e.Media.Select(m => new MediaDto(m.Id, m.Url)).ToList(),
                CreatorName = _context.Users.Where(u => u.Id == e.CreatedBy).Select(u => u.Name).FirstOrDefault()
            }).FirstOrDefaultAsync(cancellationToken);
