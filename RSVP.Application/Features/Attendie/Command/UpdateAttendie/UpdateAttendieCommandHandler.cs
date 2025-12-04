@@ -39,7 +39,7 @@ public class UpdateAttendieCommandHandler:IRequestHandler<UpdateAttendieCommand,
             }
             attendie.UpdateStatus(request.Status.Value);
         }
-            if (isOwnAttendee && attendie.UserId == null)
+            if (isOwnAttendeeEmail && attendie.UserId == null)
             attendie.UpdateUserId(_currentUser.UserId);
         // Update role - only allowed for organizers/owners
         if (request.Role.HasValue)
