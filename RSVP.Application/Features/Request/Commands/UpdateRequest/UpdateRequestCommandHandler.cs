@@ -69,7 +69,7 @@ public class UpdateRequestCommandHandler:IRequestHandler<UpdateRequestCommand,bo
             (
                 requestToUpdate.UserId,
                 $"Your request to join the event {EventName} has been accepted.",
-                $"/events/{requestToUpdate.EventId}"
+                $"/invitedevents/{requestToUpdate.EventId}"
             );
 
             await _notificationRepository.AddAsync(notification, cancellationToken);
