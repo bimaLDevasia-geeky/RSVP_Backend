@@ -1,5 +1,6 @@
 using System;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using RSVP.Application.Dtos;
 using RSVP.Application.Interfaces;
 
@@ -17,9 +18,9 @@ public class GetNotificationQueryHandler:IRequestHandler<GetNotificationQuery, L
         _currentUser = currentUser;
     }
 
-    public Task<List<NotificationDto>> Handle(GetNotificationQuery request, CancellationToken cancellationToken)
+    public async Task<List<NotificationDto>> Handle(GetNotificationQuery request, CancellationToken cancellationToken)
     {
-        var notifications = _context.Notifications
+        var notifications = await _context.Notifications
             .Where(n => n.UserId == _currentUser.UserId)
             .Select(n => new NotificationDto
             {
@@ -28,8 +29,8 @@ public class GetNotificationQueryHandler:IRequestHandler<GetNotificationQuery, L
                 CreatedAt = n.CreatedAt,
                 Route = n.Route
             })
-            .ToList();
+            .ToListAsync(cancellationToken);
 
-        return Task.FromResult(notifications);
+        return notifications;
     }
 }
